@@ -1,1 +1,38 @@
 version: "3.7"
+
+services:
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_PASSWORD: dbpass
+    volumes:
+      - dbstore:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+      target: server
+    command: rails server -b 0.0.0.0
+    environment:
+      PORT: 3000
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://postgres:dbpass@db:5432
+    ports:
+      - 53000:3000
+    volumes:
+      - ./server/:/server
+
+  client:
+    build:
+      context: .
+      target: client
+    command: yarn start
+    environment:
+      PORT: 3001
+    ports:
+      - 53001:3001
+    volumes:
+      - ./client:/client
+
+volumes:
+  dbstore:
