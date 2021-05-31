@@ -5,14 +5,20 @@ class MenuItem < ApplicationRecord
 
   ALLOWED_TYPES = %w[side main_course]
 
-  validates :name, :price, :type, presence: true
-  validates :name, uniqueness: { case_sensitive: false }
-  validates :type, inclusion: { in: ALLOWED_TYPES, message: 'provided not supported' }
-  validates_format_of :price, with: /\A\$\d+\z/, message: "format is not valid"
+  before_save :transform_data
 
-  before_save :titleize_name
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :type, presence: true, inclusion: { in: ALLOWED_TYPES, message: 'provided not supported' }
+  validates :price, presence: true, format: { with: /\A\$\d+\z/, message: "format is not valid" }
+  validates :photo, allow_nil: true, allow_blank: true, uniqueness: { case_sensitive: false }
 
-  def titleize_name
+  def transform_data
     self.name = self.name.titleize
+    self.photo = self.photo.strip unless self.photo.nil?
+  end
+
+  def photo_saved?
+    return false if photo.nil?
+    File.exist?(Rails.root.join("storage/#{photo}"))
   end
 end
