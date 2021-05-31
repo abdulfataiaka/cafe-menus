@@ -19,6 +19,9 @@ COPY server/ ./
 
 FROM node:16-alpine3.11 AS client
 
+RUN apk update && apk upgrade && apk add --update --no-cache \
+  build-base wait4ports bash
+
 WORKDIR /client
 
 COPY client/package.json client/yarn.lock ./
