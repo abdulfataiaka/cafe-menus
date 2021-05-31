@@ -6,8 +6,19 @@ help: ## This help command. Anything prepended with a double hash will be displa
 
 
 ##----------------------------------------------------------------------------------------------------------------------
+##@ Database
+
+
+##----------------------------------------------------------------------------------------------------------------------
 ##@ Client
 
 
 ##----------------------------------------------------------------------------------------------------------------------
 ##@ Server
+
+
+
+# Install images and ensure immediate application development run
+# Start up all containers for development
+# Start up only server container for development
+# Start up only client container for development

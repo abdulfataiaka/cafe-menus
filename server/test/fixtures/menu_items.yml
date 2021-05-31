@@ -1,6 +1,6 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-menu:
+menu_item:
   name:  Yummy
   price: $5
   photo: nil
