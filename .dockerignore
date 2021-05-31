@@ -1,0 +1,6 @@
+/server/tmp/*
+!/server/tmp/.keep
+!/server/tmp/pids
+!/server/tmp/pids/.keep
+
+/client/node_modules

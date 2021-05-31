@@ -1,0 +1,7 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+menu:
+  name:  Yummy
+  price: $5
+  photo: nil
+  type:  main_course
