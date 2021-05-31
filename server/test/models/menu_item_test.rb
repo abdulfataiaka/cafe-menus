@@ -9,9 +9,9 @@ class MenuItemTest < ActiveSupport::TestCase
     assert menu_item.invalid?
     assert_equal menu_item.errors.full_messages, [
       "Name can't be blank",
-      "Price can't be blank",
       "Type can't be blank",
       "Type provided not supported",
+      "Price can't be blank",
       "Price format is not valid",
     ]
   end

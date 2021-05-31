@@ -7,37 +7,35 @@ module Api
     end
 
     def show
-      result = MenuItemService.call(action: :find, id: params[:id])
-      status = result.delete(:status)
+      result = MenuItemService.create(**permitted_params).find_menu_item
 
-      render status: status, json: result
+      render json: result
     end
 
     def create
-      result = MenuItemService.call(action: :create, **permitted_params)
-      status = result.delete(:status)
+      result = MenuItemService.create(**permitted_params).create_menu_item
+      status = result[:errors].any? ? :bad_request : :created
 
       render status: status, json: result
     end
 
     def update
-      result = MenuItemService.call(action: :update, id: params[:id], **permitted_params)
-      status = result.delete(:status)
+      result = MenuItemService.create(**permitted_params).update_menu_item
+      status = result[:errors].any? ? :bad_request : :ok
 
       render status: status, json: result
     end
 
     def destroy
-      result = MenuItemService.call(action: :delete, id: params[:id])
-      status = result.delete(:status)
+      result = MenuItemService.create(**permitted_params).delete_menu_item
 
-      render status: status, json: result
+      render json: result
     end
 
     private
 
     def permitted_params
-      params.require(:menu_item).permit(:name, :price, :type)
+      params.permit(:id, :name, :price, :type, :photo)
     end
   end
 end
