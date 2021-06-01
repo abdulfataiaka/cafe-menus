@@ -3,7 +3,7 @@
 module Api
   class MenuItemsController < ApplicationController
     def index
-      render json: { data: MenuItem.all, errors: [] }
+      render json: { data: MenuItem.all }
     end
 
     def show
