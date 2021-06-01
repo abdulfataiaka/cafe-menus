@@ -66,6 +66,10 @@ class MenuItemService
     { name: @name, price: @price, type: @type }.compact
   end
 
+  def photo_valid?
+    @photo.is_a?(ActionDispatch::Http::UploadedFile)
+  end
+
   def delete_photo(path)
     return if path.nil?
     File.delete(Rails.root.join("storage/#{path}"))
@@ -74,11 +78,11 @@ class MenuItemService
   def upload_photo
     path = nil; errors = []
 
-    if @photo && !/^image\/.+$/.match(@photo.content_type)
+    if photo_valid? && !/^image\/.+$/.match(@photo.content_type)
       errors << "Photo mimetype is invalid"
     end
 
-    if @photo && errors.empty?
+    if photo_valid? && errors.empty?
       ext = @photo.content_type.split("/")[-1].downcase
       path = "uploads/#{SecureRandom.uuid}.#{ext}"
       upload_path = Rails.root.join("storage/#{path}")

@@ -1,15 +1,13 @@
 import React from 'react';
 
-const MenuItemCardView = () => {
+const MenuItemCard = ({ menuItem }) => {
   return (
     <div>
-      This is the square card
+      <div>{menuItem.name}</div>
+      <div>{menuItem.photo}</div>
+      <br /><br />
     </div>
   )
-};
-
-const MenuItemCard = () => {
-  return <MenuItemCardView />;
 }
 
 export default MenuItemCard;
