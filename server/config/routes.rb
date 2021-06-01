@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  get 'uploads/*photo', to: 'uploads#show'
+  root to: 'statics#root'
+  get 'uploads/:text', to: 'statics#uploads'
 
   namespace :api do
     resources :menu_items
