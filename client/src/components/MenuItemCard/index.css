@@ -1,0 +1,31 @@
+.menu-item-card {
+  width: 25%;
+}
+
+.menu-item-card-main {
+  display: block;
+  width: 92%;
+  margin: 0 auto;
+  border-radius: 0.1em;
+  overflow: hidden;
+}
+
+.menu-item-photo {
+  display: block;
+  width: 100%;
+  background: #43425d;
+  height: 19vh;
+  overflow: hidden;
+  border-bottom: 0.06rem solid #F1F1F1;
+}
+
+.menu-item-photo img {
+  width: 100%;
+}
+
+.menu-item-info {
+  display: block;
+  background: white;
+  min-height: 1vh;
+  padding: 1rem 1.5rem;
+}
