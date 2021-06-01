@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 class MenuItemTest < ActiveSupport::TestCase
-  test "validate menu item" do
+  test 'validate menu item' do
     menu_item = MenuItem.new
 
     assert menu_item.invalid?
@@ -16,33 +16,10 @@ class MenuItemTest < ActiveSupport::TestCase
     ]
   end
 
-  test "create a menu item" do
-    menu_item = MenuItem.create!(name: "First Test", price: "$5", type: :side)
+  test 'transform menu item name' do
+    menu_item = MenuItem.create!(name: 'TesT NaMe', price: '$5', type: :side)
 
     assert_equal MenuItem.count, 2
-    assert_equal menu_item.name, "First Test"
-  end
-
-  test "update a menu item" do
-    new_name = "New Random"
-    menu_item = menu_items(:menu_item)
-    assert_not_equal menu_item.name, new_name
-    menu_item.update(name: new_name)
-    assert_equal menu_item.name, new_name
-  end
-
-  test "delete a menu item" do
-    menu_item = MenuItem.create(name: "Second Test", price: "$15", type: :main_course)
-
-    assert menu_item.persisted?
-    menu_item.delete
-    assert_not menu_item.persisted?
-  end
-
-  test "fetch all menu items" do
-    menu_item = MenuItem.create(name: "Third Test", price: "$15", type: :main_course)
-
-    assert_equal MenuItem.count, 2
-    assert_equal MenuItem.all.map(&:name), [menu_items(:menu_item).name, "Third Test"]
+    assert_equal menu_item.name, 'Test Name'
   end
 end
