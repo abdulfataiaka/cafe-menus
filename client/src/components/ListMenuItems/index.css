@@ -1,0 +1,26 @@
+.list-menu-items {
+  display: block;
+  width: 90%;
+  min-height: 50%;
+  margin: 0 auto;
+}
+
+.list-menu-items .title {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 1rem 3rem;
+}
+
+.list-menu-items .title span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.list-menu-items .catalog {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list-menu-items .catalog .menu-item-card {
+  margin-bottom: 3vh;
+}

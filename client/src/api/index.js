@@ -1,5 +1,7 @@
 import BaseApi from './base_api';
 
+export const API_BASE_URL = "http://localhost:53000";
+
 class Api extends BaseApi {
   static fetch(id) {
     return this.request('GET', id, null);

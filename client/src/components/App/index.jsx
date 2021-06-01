@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, Link } from 'react-router-dom';
 import ListMenuItems from '../ListMenuItems';
 import ManageMenuItem from '../ManageMenuItem';
 import './index.css';
@@ -7,7 +7,9 @@ import './index.css';
 function App() {
   return (
     <>
-      <div className="app-header">CREATE REACT</div>
+      <div className="app-header">
+        <Link to="/">CREATE REACT</Link>
+      </div>
       <div className="app-main">
         <Switch>
           <Route exact path="/" render={props => <ListMenuItems {...props} />} />
