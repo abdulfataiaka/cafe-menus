@@ -1,20 +1,7 @@
-- README of setup and deploy instructions
--   Docker + NonDocker
-- Use Github
-- Deploy to Heroku
-- Rails + React + PostgreSQL
-- List Menus + Add/Update/Delete Menu
-- Upload Menu Photo (Use ActiveStorage)
-- Unit + Integration Tests
+docker-compose up
 
-- Little bit of show off with docker, compose and Makefile, so not important, plus I like using those tools anywhere possible
+docker-compose run --rm server rails test
+docker-compose run --rm client yarn test
 
-- Setup client, server, postgres in docker
-- Setup commands in Makefile
-  * dev | test | test-client | test-server
-- Implement API endpoints for CRUD on menus
-- Add plain components for CRUD on menus with
-- Add support for communication with backend
-- Allow components to interact with backend
-- Ensure backend tests
-- Ensure frontend tests
+http://127.0.0.1:53000 - Server Access
+http://127.0.0.1:53001 - Client Access
