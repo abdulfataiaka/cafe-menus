@@ -1,0 +1,16 @@
+build:
+  docker:
+    web:
+      target: server-prod
+      dockerfile: Dockerfile
+  config:
+    RAILS_ENV: production
+    REACT_APP_API_BASE_URL: https://cafe-menus-app.herokuapp.com
+
+release:
+  image: web
+  command:
+    - rails db:migrate
+
+run:
+  web: bundle exec puma -C config/puma.rb

@@ -29,7 +29,7 @@ services:
     command: yarn start
     environment:
       PORT: 3001
-      REACT_APP_API_BASE_URL: http://localhost:53000
+      REACT_APP_API_BASE_URL: http://127.0.0.1:53000
     ports:
       - 53001:3001
     volumes:
