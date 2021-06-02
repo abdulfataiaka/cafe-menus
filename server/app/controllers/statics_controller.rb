@@ -6,7 +6,13 @@ class StaticsController < ApplicationController
   end
 
   def uploads
-    path = Rails.root.join("storage/#{request.path}")
+    path = Rails.root.join("storage#{request.path}")
+    raise_not_found unless File.exist?(path)
+    send_file path, disposition: "inline" 
+  end
+
+  def client
+    path = Rails.root.join("public/client#{request.path}")
     raise_not_found unless File.exist?(path)
     send_file path, disposition: "inline" 
   end
