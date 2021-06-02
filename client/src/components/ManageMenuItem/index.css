@@ -8,11 +8,19 @@
 .manage-menu-item .title {
   font-size: 1.2rem;
   font-weight: bold;
-  padding: 2rem 1rem 3rem;
+  padding: 2rem 0 3rem;
 }
 
 .manage-menu-item form {
   display: block;
-  width: 98%;
-  margin: 0 auto;
+  margin: 0 auto 2rem;
+}
+
+.manage-menu-item .form-field {
+  margin-bottom: 2rem;
+}
+
+.manage-menu-item .form-field label {
+  display: inline-block;
+  width: 5rem;
 }

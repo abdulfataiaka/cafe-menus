@@ -2,30 +2,55 @@
   width: 25%;
 }
 
-.menu-item-card-main {
+.menu-item-card .main {
   display: block;
-  width: 92%;
+  width: 85%;
   margin: 0 auto;
   border-radius: 0.1em;
   overflow: hidden;
 }
 
-.menu-item-photo {
+.menu-item-card .main .photo {
   display: block;
   width: 100%;
   background: #43425d;
-  height: 19vh;
+  height: 12em;
   overflow: hidden;
   border-bottom: 0.06rem solid #F1F1F1;
 }
 
-.menu-item-photo img {
+.menu-item-card .main .photo img {
   width: 100%;
 }
 
-.menu-item-info {
+.menu-item-card .info {
   display: block;
   background: white;
-  min-height: 1vh;
   padding: 1rem 1.5rem;
+}
+
+.menu-item-card .info .info-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+  margin-bottom: 0.8rem;
+}
+
+.menu-item-card .info .info-top .info-type {
+  font-weight: bold;
+  color: gray;
+  text-transform: uppercase;
+}
+
+.menu-item-card .info .info-btns {
+  text-align: right;
+}
+
+.menu-item-card .info .info-btns .btn {
+  background: white;
+  font-size: 0.7rem;
+  color: gray;
+  padding: 0.5rem 0.5rem;
+  margin-left: 0.5rem;
+  border: 0.1em solid #E8E8E8;  
 }

@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.API_BASE_URL;
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const buildUrl = path => {
   let url = `${API_BASE_URL}/api/menu_items`;
@@ -20,7 +20,7 @@ const buildBody = payload => {
   return formData;
 }
 
-const request = (method, path, payload) => {
+const request = async (method, path, payload) => {
   let errors = [];
   let data = null;
 
@@ -32,13 +32,14 @@ const request = (method, path, payload) => {
   try {
     const response = await fetch(url, options);
     const jsonres = await response.json();
-    data = jsonres.data || null;
+    data = jsonres.data;
     errors = jsonres.errors || [];
   } catch(error) {
+    console.log(error);
     errors.push(error.message);
   }
 
-  return { payload, errors };
+  return { data, errors };
 }
 
 class Api {
@@ -47,15 +48,15 @@ class Api {
   }
 
   static create(payload) {
-    return this.request('POST', null, payload);
+    return request('POST', null, payload);
   }
 
   static update(id, payload) {
-    return this.request('PATCH', id, payload);
+    return request('PATCH', id, payload);
   }
 
   static delete(id) {
-    return this.request('DELETE', id, null);
+    return request('DELETE', id, null);
   }
 }
 
