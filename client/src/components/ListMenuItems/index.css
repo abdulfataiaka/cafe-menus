@@ -8,12 +8,17 @@
 .list-menu-items .title {
   display: flex;
   justify-content: space-between;
-  padding: 2rem 1rem 3rem;
+  padding: 2rem 1.9rem 3rem;
 }
 
 .list-menu-items .title span {
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.list-menu-items .notify {
+  width: 96.5%;
+  margin: 0 auto;
 }
 
 .list-menu-items .catalog {
@@ -22,5 +27,5 @@
 }
 
 .list-menu-items .catalog .menu-item-card {
-  margin-bottom: 3vh;
+  margin-bottom: 8vh;
 }

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  get 'uploads/*photo', to: 'uploads#show'
+  root to: 'statics#root'
+  get 'favicon.ico',   to: 'statics#client'
+  get 'static/*text',  to: 'statics#client'
+  get 'uploads/*text', to: 'statics#uploads'
 
   namespace :api do
     resources :menu_items

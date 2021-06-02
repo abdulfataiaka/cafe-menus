@@ -13,8 +13,7 @@ class MenuItem < ApplicationRecord
   validates :photo, allow_nil: true, allow_blank: true, uniqueness: { case_sensitive: false }
 
   def transform_data
-    self.name = self.name.titleize
-    self.photo = self.photo.strip unless self.photo.nil?
+    self.name = self.name.downcase.titleize
   end
 
   def photo_saved?

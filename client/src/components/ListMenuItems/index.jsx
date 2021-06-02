@@ -1,30 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MenuItemCard from '../../components/MenuItemCard';
-import Api from '../../api';
-import './index.css';
 import Button from '../Button';
+import Errors from '../Errors';
+import Api from '../../lib/api';
+import './index.css';
 
 const ListMenuItems = () => {
   const [errors, setErrors] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
 
   const fetchRequest = async () => {
-    const { payload = [], errors } = await Api.fetch();
-    setErrors(errors);
-    setMenuItems(payload);
+    const { data, errors: resErrors } = await Api.fetch();
+    setErrors(resErrors);
+    setMenuItems(data || []);
   }
 
-  const deleteHandler = useCallback(async (id) => {
-    const { errors } = await Api.delete(id);
-    setErrors(errors);
-
-    if (errors.length !== 0) return
-
-    const filteredMenuItems = menuItems.filter(menuItem => menuItem.id !== id);
-    setMenuItems(filteredMenuItems);
-  }, [menuItems]);
-
   useEffect(() => { fetchRequest(); }, []);
+
+  const deleteHandler = async (id) => {
+    const { errors: resErrors } = await Api.delete(id);
+    setErrors(resErrors);
+    if (resErrors.length !== 0) return;
+    setMenuItems(menuItems.filter(menuItem => menuItem.id !== id));
+  };
 
   return (
     <div className="list-menu-items">
@@ -33,16 +31,18 @@ const ListMenuItems = () => {
         <Button to="/manage" name="Add menu item" />
       </div>
 
-      <div className="catalog">
-        { errors.map(error => <div key={error}>{error}</div>) }
-        { errors.length === 0 && menuItems.length === 0 && <div>No Menu Items Found</div> }
+      <div className="notify">
+        { errors.length !== 0 && <Errors errors={errors} /> }
+        { errors.length === 0 && menuItems.length === 0 && <Errors errors={['There are no menu items at the moment']} /> }
+      </div>
 
-        { menuItems.map((menuItem) => (
-            <MenuItemCard
-              key={menuItem.id}
-              menuItem={menuItem}
-              deleteHandler={deleteHandler}
-            />
+      <div className="catalog">
+        { menuItems.map(menuItem => (
+          <MenuItemCard
+            key={menuItem.id}
+            menuItem={menuItem}
+            deleteHandler={deleteHandler}
+          />
         ))}
       </div>
     </div>

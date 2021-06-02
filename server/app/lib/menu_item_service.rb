@@ -1,94 +1,104 @@
 # frozen_string_literal: true
 
 class MenuItemService
-  def self.create(**kwargs)
-    new.tap do |instance|
-      kwargs.each { |k, v| instance.instance_variable_set("@#{k}", v) }
-    end
-  end
+  class << self
+    def find_menu_item(id)
+      result = init_result
+      record = MenuItem.find_by(id: id)
 
-  def find_menu_item
-    errors = []
-    record = MenuItem.find_by(id: @id)
-    errors << "Menu item with id `#{@id}` not found" if record.nil?
-    { data: record, errors: errors }
-  end
-
-  def create_menu_item
-    path, errors = upload_photo
-    return { data: nil, errors: errors } if errors.any?
-
-    record = MenuItem.create(photo: path, **parameters)
-
-    { data: record, errors: record.errors.full_messages }.tap do |result|
-      if result[:errors].any?
-        result[:data] = nil
-        delete_photo(path)
-      end
-    end
-  end
-
-  def update_menu_item
-    result = find_menu_item
-    record = result[:data]
-    return result if record.nil?
-
-    old_path = record.photo_saved? ? record.photo : nil
-    new_path, errors = upload_photo
-    return { data: nil, errors: errors } if errors.any?
-
-    record.assign_attributes(parameters)
-    record.photo = new_path if new_path
-    record.save
-
-    { data: record, errors: record.errors.full_messages }.tap do |result|
-      if result[:errors].any?
-        result[:data] = nil
-        delete_photo(new_path)
+      if record
+        result[:data] = record
+        return result
       end
 
-      delete_photo(old_path) if record.photo != old_path
-    end
-  end
-
-  def delete_menu_item
-    result = find_menu_item
-    record = result[:data]
-    return result if record.nil?
-
-    record.destroy
-    { data: record.id, errors: [] }
-  end
-
-  private
-
-  def parameters
-    { name: @name, price: @price, type: @type }.compact
-  end
-
-  def photo_valid?
-    @photo.is_a?(ActionDispatch::Http::UploadedFile)
-  end
-
-  def delete_photo(path)
-    return if path.nil?
-    File.delete(Rails.root.join("storage/#{path}"))
-  end
-
-  def upload_photo
-    path = nil; errors = []
-
-    if photo_valid? && !/^image\/.+$/.match(@photo.content_type)
-      errors << "Photo mimetype is invalid"
+      result[:status] = :not_found
+      result[:errors] << "Menu item with id `#{id}` not found"
+      result
     end
 
-    if photo_valid? && errors.empty?
-      ext = @photo.content_type.split("/")[-1].downcase
-      path = "uploads/#{SecureRandom.uuid}.#{ext}"
-      upload_path = Rails.root.join("storage/#{path}")
-      File.open(upload_path, "wb") { |file| file.write(@photo.read) }
+    def create_menu_item(data)
+      result = init_result
+
+      photo = data.delete(:photo)
+      upload_result = upload_photo(photo)
+
+      unless upload_result[:errors].empty?
+        result[:status] = :bad_request
+        result[:errors] = upload_result[:errors]
+        return result
+      end
+
+      record = MenuItem.create(photo: upload_result[:path], **data)
+      errors = record.errors.full_messages
+
+      unless errors.empty?
+        result[:errors] = errors
+        result[:status] = :bad_request
+        UploadService.remove(upload_result[:path])
+        return result
+      end
+
+      result[:data] = record
+      result[:status] = :created
+      result
     end
 
-    [ path, errors ]
+    def update_menu_item(data)
+      id = data.delete(:id)
+      result = find_menu_item(id)
+      return result if result[:data].nil?
+  
+      photo = data.delete(:photo)
+      upload_result = upload_photo(photo)
+
+      unless upload_result[:errors].empty?
+        result[:data] = nil
+        result[:status] = :bad_request
+        result[:errors] = upload_result[:errors]
+        return result
+      end
+
+      record = result[:data]
+      old_photo_path = record.photo
+      record.assign_attributes(data)
+      record.photo = upload_result[:path] if upload_result[:path]
+      record.save
+      errors = record.errors.full_messages
+
+      unless errors.empty?
+        result[:data] = nil
+        result[:errors] = errors
+        result[:status] = :bad_request
+        UploadService.remove(upload_result[:path])
+        return result
+      end
+
+      UploadService.remove(old_photo_path) if old_photo_path != record.photo
+      result[:data] = record
+      result
+    end
+
+    def delete_menu_item(id)
+      result = find_menu_item(id)
+      return result if result[:data].nil?
+
+      result[:data].destroy
+      result[:data] = result[:data].id
+      result
+    end
+
+    private
+
+    def init_result
+      { status: :ok, data: nil, errors: [] }
+    end
+
+    def upload_photo(photo)
+      return { path: nil, errors: [] } if photo.nil?
+      
+      UploadService.upload_validated_file(photo, mimetype: /^image\/.+$/).tap do |result|
+        result[:errors].map! { |error| "Photo #{error}"}
+      end
+    end
   end
 end
